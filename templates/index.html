@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FWI Prediction | Machine Learning App</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --primary: #ff512f;
+            --secondary: #dd2476;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --border: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Inter", "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #1d2671, #c33764);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+        }
+
+        /* HEADER */
+        .header {
+            padding: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .header p {
+            margin-top: 8px;
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 35px;
+            background: var(--light);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #374151;
+        }
+
+        input, select {
+            padding: 11px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255,81,47,0.15);
+        }
+
+        /* BUTTON */
+        .btn-wrapper {
+            margin-top: 35px;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 14px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(221,36,118,0.4);
+        }
+
+        /* RESULT */
+        .result {
+            margin-top: 30px;
+            padding: 18px;
+            border-radius: 10px;
+            background: #ecfdf5;
+            border-left: 6px solid #10b981;
+            font-size: 18px;
+            font-weight: 700;
+            color: #065f46;
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 18px;
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+            background: #ffffff;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>Fire Weather Index Prediction</h1>
+        <p>Machine Learning–based wildfire risk assessment system</p>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <div class="section-title">Input Environmental Parameters</div>
+
+        <form action="/predict" method="post">
+
+            <div class="grid">
+
+                <div class="form-group">
+                    <label>Temperature (°C)</label>
+                    <input type="number" step="any" name="Temperature" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Relative Humidity (%)</label>
+                    <input type="number" step="any" name="RH" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Wind Speed (km/h)</label>
+                    <input type="number" step="any" name="Ws" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Rain (mm)</label>
+                    <input type="number" step="any" name="Rain" required>
+                </div>
+
+                <div class="form-group">
+                    <label>FFMC</label>
+                    <input type="number" step="any" name="FFMC" required>
+                </div>
+
+                <div class="form-group">
+                    <label>DMC</label>
+                    <input type="number" step="any" name="DMC" required>
+                </div>
+
+                <div class="form-group">
+                    <label>ISI</label>
+                    <input type="number" step="any" name="ISI" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Fire Class</label>
+                    <select name="Classes" required>
+                        <option value="0">No Fire</option>
+                        <option value="1">Fire</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Region</label>
+                    <select name="Region" required>
+                        <option value="0">Bejaia</option>
+                        <option value="1">Sidi-Bel Abbes</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="btn-wrapper">
+                <button type="submit" class="btn">
+                    Predict Fire Weather Index
+                </button>
+            </div>
+
+        </form>
+
+        {% if prediction_text %}
+            <div class="result">
+                {{ prediction_text }}
+            </div>
+        {% endif %}
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        © 2025 | Fire Weather Index ML Application | Built with Flask
+    </div>
+
+</div>
+
+</body>
+</html>
